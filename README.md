@@ -6,7 +6,7 @@
 ## Scheduling
 The bot reads cron patterns as arguments for scheduling.
 
-The following slack command schedules a backup to run Monday to Friday at 9pm EST
+The following slack command schedules a backup to run Monday to Friday at 11pm EST
 
 - `schedule 00 30 11 * * 1-5`
 
