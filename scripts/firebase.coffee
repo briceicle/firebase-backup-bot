@@ -1,21 +1,26 @@
 async = require('async')
 AWS = require('aws-sdk')
-Firebase = require('firebase')
-FirebaseTokenGenerator = require('firebase-token-generator')
+admin = require('firebase-admin')
 moment = require('moment')
+env = require('dotenv')
+
+# load the environment variables
+env.config({silent: true})
 
 authenticateFirebase = (cb) ->
-  rootRef = new Firebase('YOUR_FIREBASE_URL')
-  tokenGenerator = new FirebaseTokenGenerator('YOUR_FIREBASE_TOKEN')
-  token = tokenGenerator.createToken(
-    uid: 'SOME_UID'
-    name: 'backupbot')
-  rootRef.authWithCustomToken token, (error, authData) ->
-    if error
-      cb error
-    else
-      cb null, rootRef
-    return
+  # Fetch the service account key JSON file contents
+  serviceAccount = require(process.env.PATH_TO_SERVICE_ACCOUNT_KEY)
+
+  # Initialize the app with a custom auth variable, limiting the server's access
+  admin.initializeApp
+    credential: admin.credential.cert(serviceAccount)
+    databaseURL: process.env.FIREBASE_DB_URL
+    databaseAuthVariableOverride: uid: 'firebase-backup-bot'
+
+  db = admin.database()
+  ref = db.ref('/')
+
+  cb null, ref
   return
 
 exportFirebaseData = (rootRef, cb) ->
