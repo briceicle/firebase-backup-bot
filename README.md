@@ -4,7 +4,14 @@
 
 
 ## Scheduling
-Your Database backup is scheduled at 9pm EST every day.
+The bot reads cron patterns as arguments for scheduling.
+
+The following slack command schedules a backup to run Monday to Friday at 9pm EST
+
+- `schedule 00 30 11 * * 1-5`
+
+[Read up on cron patterns here](http://crontab.org/). Note the examples in the link have five fields, and 1 minute as the finest granularity, but the library used by the bot has six fields, with 1 second as the finest granularity.
+
 
 ## Notifications
 A backup confirmation is posted on Slack in your desired slack channel.

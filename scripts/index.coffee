@@ -9,11 +9,6 @@
 # Author:
 #   andela-bnkengsa
 
-_ = require('lodash')
-firebase = require('./firebase')
-CronJob = require('cron').CronJob
-moment = require('moment')
-
 module.exports = (robot) ->
   robot.respond /(.*)info/i, (res) ->
     res.send 'Firebase Backup Bot'
@@ -24,7 +19,8 @@ module.exports = (robot) ->
   robot.respond /backup/i, (res) ->
     robot.emit 'backup', res
 
-  # Weekly schedule (9pm every day)
-  new CronJob('0 0 21 * * *', (->
-    robot.emit 'backup', null
-  ), null, true, 'America/New_York')
+  robot.respond /schedule (.*)/i, (res) ->
+    robot.emit 'schedule', {
+      res: res,
+      pattern: res.match[1]
+    }
