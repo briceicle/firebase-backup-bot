@@ -1,12 +1,37 @@
-# backupbot
+# Firebase Backup Bot
 
-> A simple bot that backups your Firebase data to Amazon S3 and post a confimation along with size of data backed up to a slack chat room.
+> A simple bot to schedule automated backups of your Firebase data to Amazon S3.
 
-## Usage
 
-Update `firebase.coffee` with your Firebase url and token
+## Scheduling
+Your Database backup is scheduled at 9pm EST every day.
 
-Make sure to have `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables set to ensure the bot can access S3
+## Notifications
+A backup confirmation is posted on Slack in your desired slack channel.
+
+## File naming
+Files transferred to your Amazon AWS bucket will be timestamped (ISO 8601 standard) and use the following naming conventions:
+
+- Database data: `YYYY-MM-DDTHH:MM:SSZ_<DATABASE_NAME>_data.json`
+- Database rules: `YYYY-MM-DDTHH:MM:SSZ_<DATABASE_NAME>_rules.json`
+
+## Environment Variables
+
+### Amazon AWS
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_BUCKET_NAME`
+- `AWS_REGION`
+
+### Firebase
+- `FIREBASE_DB_URL`
+
+### Google
+- `PATH_TO_SERVICE_ACCOUNT_KEY`
+
+### Slack
+- `HUBOT_SLACK_TOKEN`
+- `HUBOT_SLACK_CHANNEL`
 
 ## Contribute
 
