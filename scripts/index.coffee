@@ -9,7 +9,6 @@
 #   andela-bnkengsa
 
 _ = require("lodash")
-filesize = require('filesize')
 firebase = require('./firebase')
 CronJob = require('cron').CronJob
 moment = require('moment')
@@ -19,12 +18,11 @@ module.exports = (robot) ->
     msg.send "Firebase backup service of course! I ain't yo mamma fool"
 
   robot.respond /how big is firebase?/i, (msg) ->
-    firebase.size (err, bytes) ->
+    firebase.size (err, result) ->
       if err
         msg.send "An error occured"
       else
-        size = filesize(bytes)
-        msg.send "#{size}"
+        msg.send "#{result}"
 
   robot.respond /backup firebase/i, (msg) ->
     firebase.backup (err, result) ->
@@ -32,8 +30,7 @@ module.exports = (robot) ->
         msg.send "Something went wrong! #{err.message}"
       else
         today = moment(new Date()).format('YYYY-MM-DD')
-        size = filesize(result)
-        msg.send "#{today}: #{size} of data successfully backed up!"
+        msg.send "#{today}: #{result} of data successfully backed up!"
     return
 
   # Weekly schedule (9pm every day)
@@ -43,7 +40,6 @@ module.exports = (robot) ->
         robot.messageRoom "chatroomname", "Something went wrong! #{err.message}"
       else
         today = moment(new Date()).format('YYYY-MM-DD')
-        size = filesize(result)
-        robot.messageRoom "chatroomname", "#{today}: #{size} of data successfully backed up!"
+        robot.messageRoom "chatroomname", "#{today}: #{result} of data successfully backed up!"
     return
   ), null, true, 'America/New_York')
