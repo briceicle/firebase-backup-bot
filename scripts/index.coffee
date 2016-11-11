@@ -1,5 +1,5 @@
 # Description:
-#   Allows hubot to run commands.
+#   Script listens to user commands.
 #
 # Commands:
 #   info: Display the name of the bot

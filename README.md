@@ -33,6 +33,9 @@ Files transferred to your Amazon AWS bucket will be timestamped (ISO 8601 standa
 - `HUBOT_SLACK_TOKEN`
 - `HUBOT_SLACK_CHANNEL`
 
+### Test the bot
+- `HUBOT_SLACK_TOKEN=<your-slack-token> bin/hubot -a slack
+
 ## Contribute
 
 Contribute by adding more cool commands to the bot

@@ -1,3 +1,6 @@
+# Description:
+#   Performs the data export/upload operations.
+
 async = require('async')
 AWS = require('aws-sdk')
 admin = require('firebase-admin')

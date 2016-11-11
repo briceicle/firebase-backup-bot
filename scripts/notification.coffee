@@ -1,3 +1,6 @@
+# Description:
+#   Post notifications to Slack.
+
 env = require('dotenv')
 env.config({silent: true})
 
