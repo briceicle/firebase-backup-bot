@@ -13,7 +13,6 @@ A backup confirmation is posted on Slack in your desired slack channel.
 Files transferred to your Amazon AWS bucket will be timestamped (ISO 8601 standard) and use the following naming conventions:
 
 - Database data: `YYYY-MM-DDTHH:MM:SSZ_<DATABASE_NAME>_data.json`
-- Database rules: `YYYY-MM-DDTHH:MM:SSZ_<DATABASE_NAME>_rules.json`
 
 ## Environment Variables
 
@@ -25,6 +24,7 @@ Files transferred to your Amazon AWS bucket will be timestamped (ISO 8601 standa
 
 ### Firebase
 - `FIREBASE_DB_URL`
+- `FIREBASE_DB_NAME`
 
 ### Google
 - `PATH_TO_SERVICE_ACCOUNT_KEY`
