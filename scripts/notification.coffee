@@ -9,4 +9,4 @@ module.exports = (robot) ->
     if res
       res.send msg
     else
-      robot.messageRoom process.env.SLACK_CHANNEL, msg
+      robot.messageRoom process.env.HUBOT_SLACK_CHANNEL, msg
