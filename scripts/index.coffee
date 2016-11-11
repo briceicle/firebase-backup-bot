@@ -2,44 +2,29 @@
 #   Allows hubot to run commands.
 #
 # Commands:
-#   how big is firebase: Display the size of Firebase data
-#   backup firebase: Trigger a firebase backup to S3 and display confirmation
+#   info: Display the name of the bot
+#   size: Display the size of Firebase data
+#   backup: Trigger a firebase backup to S3 and display confirmation
 #
 # Author:
 #   andela-bnkengsa
 
-_ = require("lodash")
+_ = require('lodash')
 firebase = require('./firebase')
 CronJob = require('cron').CronJob
 moment = require('moment')
 
 module.exports = (robot) ->
-  robot.respond /(.*)information?/i, (msg) ->
-    msg.send "Firebase backup service of course! I ain't yo mamma fool"
+  robot.respond /(.*)info/i, (res) ->
+    res.send 'Firebase Backup Bot'
 
-  robot.respond /how big is firebase?/i, (msg) ->
-    firebase.size (err, result) ->
-      if err
-        msg.send "An error occured"
-      else
-        msg.send "#{result}"
+  robot.respond /size/i, (res) ->
+    robot.emit 'size', res
 
-  robot.respond /backup firebase/i, (msg) ->
-    firebase.backup (err, result) ->
-      if err
-        msg.send "Something went wrong! #{err.message}"
-      else
-        today = moment(new Date()).format('YYYY-MM-DD')
-        msg.send "#{today}: #{result} of data successfully backed up!"
-    return
+  robot.respond /backup/i, (res) ->
+    robot.emit 'backup', res
 
   # Weekly schedule (9pm every day)
   new CronJob('0 0 21 * * *', (->
-    firebase.backup (err, result) ->
-      if err
-        robot.messageRoom "chatroomname", "Something went wrong! #{err.message}"
-      else
-        today = moment(new Date()).format('YYYY-MM-DD')
-        robot.messageRoom "chatroomname", "#{today}: #{result} of data successfully backed up!"
-    return
+    robot.emit 'backup', null
   ), null, true, 'America/New_York')

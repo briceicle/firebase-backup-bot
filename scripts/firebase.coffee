@@ -2,14 +2,11 @@ async = require('async')
 AWS = require('aws-sdk')
 admin = require('firebase-admin')
 moment = require('moment')
-env = require('dotenv')
 filesize = require('filesize')
-
-# load the environment variables
+env = require('dotenv')
 env.config({silent: true})
 
 serviceAccount = require(process.env.PATH_TO_SERVICE_ACCOUNT_KEY)
-
 admin.initializeApp
   credential: admin.credential.cert(serviceAccount)
   databaseURL: process.env.FIREBASE_DB_URL
@@ -52,17 +49,34 @@ dataUpload = (data, cb) ->
       bytes = Buffer.byteLength(payload, 'utf8')
       cb err, filesize(bytes)
 
-module.exports = 
-  backup: (cb) ->
+format = (err, result) ->
+  msg = null
+
+  if err
+    msg = "Something went wrong: #{err.message}"
+  else
+    msg = "#{result}"
+
+  return msg
+
+module.exports = (robot) ->
+  robot.on 'backup', (res) ->
     async.waterfall [
       auth
       dataExport
       dataUpload
     ], (err, result) ->
-      cb err, result
-  size: (cb) ->
+      robot.emit 'done', {
+        res: res,
+        msg: format(err, result)
+      }
+
+  robot.on 'size', (res) ->
     async.waterfall [
       auth
       dataSize
     ], (err, result) ->
-      cb err, result
+      robot.emit 'done', {
+        res: res,
+        msg: format(err, result)
+      }
